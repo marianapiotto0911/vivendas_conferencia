@@ -158,6 +158,9 @@
     flex:none; cursor:pointer; touch-action:manipulation;
     -webkit-tap-highlight-color:transparent;
   }
+  body.readonly .checkbox3, body.readonly .item-cell{ cursor:default; }
+  body.readonly .checkbox3:hover .box-inner{ border-color:var(--line-strong); }
+  body.readonly .item-cell:hover{ border-color:var(--line-strong); }
   .checkbox3 .box-inner{
     width:24px; height:24px; border-radius:5px; border:1.5px solid var(--line-strong);
     transition:.12s;
@@ -231,9 +234,7 @@
   <button id="resetBtn" style="margin-top:8px;background:none;border:1px solid var(--line-strong);color:var(--text-dim);font-size:11px;padding:5px 12px;border-radius:14px;cursor:pointer;">Reiniciar todos os dados (apagar progresso)</button>
   <button id="diagBtn" style="margin-top:8px;margin-left:8px;background:none;border:1px solid var(--line-strong);color:var(--text-dim);font-size:11px;padding:5px 12px;border-radius:14px;cursor:pointer;">Mostrar diagnóstico</button>
   <div id="diagBox" style="display:none;max-width:640px;margin:14px auto 0;text-align:left;background:#1c2925;border:1px solid var(--line-strong);border-radius:8px;padding:10px 12px;font-family:monospace;font-size:11px;color:#b9e0c9;max-height:220px;overflow-y:auto;white-space:pre-wrap;"></div>
-</footer>
-
-<script type="module">
+</footer><script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getFirestore, doc, setDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
@@ -249,6 +250,7 @@ const fbApp = initializeApp(firebaseConfig);
 const fdb = getFirestore(fbApp);
 
 const DATA = {"items": [{"id": 1, "name": "Acomp. do estaqueamento e marcação Baldrame", "sector": "construcao", "weight": 0.015}, {"id": 2, "name": "Fundações (escavação)", "sector": "construcao", "weight": 0.02}, {"id": 3, "name": "Fundações (reaterro e apiloamento)", "sector": "construcao", "weight": 0.02}, {"id": 4, "name": "Fundações (forma e armação)", "sector": "construcao", "weight": 0.03}, {"id": 5, "name": "Fundações (concreto)", "sector": "construcao", "weight": 0.01}, {"id": 6, "name": "Fundações (alvenaria embasamento)", "sector": "construcao", "weight": 0.01}, {"id": 7, "name": "Tubulação e caixas no piso", "sector": "eletrica", "weight": 0.05}, {"id": 8, "name": "Distribuição de esgoto no piso", "sector": "hidraulica", "weight": 0.1}, {"id": 9, "name": "Tubulação no piso GÁS", "sector": "gas", "weight": 0.37}, {"id": 10, "name": "Fundações impermeabilização", "sector": "construcao", "weight": 0.02}, {"id": 11, "name": "Redes externas", "sector": "hidraulica", "weight": 0.2}, {"id": 12, "name": "Contrapiso interno Térreo", "sector": "construcao", "weight": 0.04}, {"id": 13, "name": "Alvenaria Estrutural Térreo", "sector": "construcao", "weight": 0.08}, {"id": 14, "name": "Tubulação e caixas na alvenaria térreo", "sector": "eletrica", "weight": 0.115}, {"id": 15, "name": "Distribuição de água alvenaria Térreo", "sector": "hidraulica", "weight": 0.15}, {"id": 16, "name": "Teste 01 GÁS", "sector": "gas", "weight": 0.37}, {"id": 17, "name": "Laje Pavimento Superior", "sector": "construcao", "weight": 0.105}, {"id": 18, "name": "Tubulação e caixas na laje superior", "sector": "eletrica", "weight": 0.07}, {"id": 19, "name": "Distribuição de esgoto no teto", "sector": "hidraulica", "weight": 0.1}, {"id": 20, "name": "Alvenaria Estrutural Superior", "sector": "construcao", "weight": 0.08}, {"id": 21, "name": "Tubulação e caixas na alvenaria superior", "sector": "eletrica", "weight": 0.115}, {"id": 22, "name": "Distribuição de água alvenaria Superior", "sector": "hidraulica", "weight": 0.2}, {"id": 23, "name": "Laje Pavimento Cobertura", "sector": "construcao", "weight": 0.075}, {"id": 24, "name": "Tubulação e caixas na laje cobertura", "sector": "eletrica", "weight": 0.07}, {"id": 25, "name": "Alvenaria oitão + Caixa d'água", "sector": "construcao", "weight": 0.07}, {"id": 26, "name": "Instalação infraestrutura AR COND", "sector": "arcond", "weight": 0.95}, {"id": 27, "name": "Entrega serviço AR COND", "sector": "arcond", "weight": 0.05}, {"id": 28, "name": "Revestimento chapisco externo", "sector": "construcao", "weight": 0.04}, {"id": 29, "name": "Revestimento de massa externa", "sector": "construcao", "weight": 0.12}, {"id": 30, "name": "Barrilete Hidráulico", "sector": "hidraulica", "weight": 0.02}, {"id": 31, "name": "Tubulação e caixas no sotão", "sector": "eletrica", "weight": 0.07}, {"id": 32, "name": "Cobertura", "sector": "construcao", "weight": 0.02}, {"id": 33, "name": "Batentes esquadrias", "sector": "construcao", "weight": 0.03}, {"id": 34, "name": "Regularização p/ azulejo", "sector": "construcao", "weight": 0.02}, {"id": 35, "name": "Gesso", "sector": "construcao", "weight": 0.0}, {"id": 36, "name": "Regularização p/ piso vinílico", "sector": "construcao", "weight": 0.01}, {"id": 37, "name": "Regularização p/ piso cerâmico", "sector": "construcao", "weight": 0.02}, {"id": 38, "name": "Impermeabilização piso frio", "sector": "construcao", "weight": 0.01}, {"id": 39, "name": "Azulejos (cantoneira e rejuntamento)", "sector": "construcao", "weight": 0.05}, {"id": 40, "name": "Pisos interno (cerâmica)", "sector": "construcao", "weight": 0.07}, {"id": 41, "name": "Enfiação", "sector": "eletrica", "weight": 0.2}, {"id": 42, "name": "Montagem do quadro de luz", "sector": "eletrica", "weight": 0.08}, {"id": 43, "name": "Ligação da entrada ao quadro", "sector": "eletrica", "weight": 0.03}, {"id": 44, "name": "Colocação tomadas e interruptores", "sector": "eletrica", "weight": 0.15}, {"id": 45, "name": "Colocação de banheira e louças", "sector": "hidraulica", "weight": 0.15}, {"id": 46, "name": "Entrega da obra", "sector": "construcao", "weight": 0.035}, {"id": 47, "name": "Testes elétricos", "sector": "eletrica", "weight": 0.05}, {"id": 48, "name": "Testes hidráulicos", "sector": "hidraulica", "weight": 0.08}, {"id": 49, "name": "Teste 02 GÁS e acabamentos registros", "sector": "gas", "weight": 0.26}], "sectors": [{"id": "construcao", "label": "Construção", "color": "#C9987A"}, {"id": "eletrica", "label": "Elétrica", "color": "#B5544A"}, {"id": "hidraulica", "label": "Hidráulica", "color": "#5C87A0"}, {"id": "gas", "label": "Gás", "color": "#C9A227"}, {"id": "arcond", "label": "Ar Condicionado", "color": "#7FAF9C"}], "blocks": [{"id": 1, "houses": [1, 2, 3, 4, 5, 6, 7, 8, 9]}, {"id": 2, "houses": [19, 20, 21, 22, 23, 24, 25, 26, 27]}, {"id": 3, "houses": [37, 38, 39, 40, 41, 42, 43, 44, 45]}, {"id": 4, "houses": [10, 11, 12, 13, 14, 15, 16, 17, 18]}, {"id": 5, "houses": [28, 29, 30, 31, 32, 33, 34, 35, 36]}, {"id": 6, "houses": [46, 47, 48, 49, 50, 51, 52, 53, 54]}], "rows": [[1, 4], [2, 5], [3, 6]], "special": [2, 5, 6, 7, 13, 15, 20, 21, 26, 29, 37, 39, 41, 42]};
+const READONLY = new URLSearchParams(location.search).get('view') === '1';
 const diagLog = [];
 function diag(msg){
   const t = new Date().toLocaleTimeString('pt-BR');
@@ -496,6 +498,7 @@ function renderCasa(h){
     '<div class="item-list">'+rows+'</div>';
 }
 function bindCasaEvents(h){
+  if(READONLY) return;
   document.querySelectorAll('.checkbox3').forEach(el => {
     el.addEventListener('click', async () => {
       try{
@@ -541,6 +544,7 @@ function renderItemPage(itemId){
     '<div class="rows-wrap">'+rowsHTML+'</div>';
 }
 function bindItemEvents(itemId){
+  if(READONLY) return;
   document.querySelectorAll('.item-cell').forEach(el => {
     el.addEventListener('click', async () => {
       try{
@@ -629,7 +633,15 @@ function withTimeout(promise, ms, label){
 
 // ---------- init ----------
 async function init(){
-  diag('init() começou.');
+  diag('init() começou.' + (READONLY ? ' Modo somente-visualização ativo.' : ''));
+  if(READONLY){
+    document.body.classList.add('readonly');
+    document.getElementById('resetBtn').style.display = 'none';
+    const banner = document.createElement('div');
+    banner.textContent = '👁 Modo visualização — você está vendo o progresso, mas não pode editar.';
+    banner.style.cssText = 'text-align:center;font-size:12px;padding:6px;background:#2a3a34;color:var(--accent-light);border-bottom:1px solid var(--line-strong);';
+    document.querySelector('header.site').insertAdjacentElement('afterend', banner);
+  }
   buildChecklistPanel();
   window.addEventListener('hashchange', navigateRender);
 
